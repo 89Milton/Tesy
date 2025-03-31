@@ -21,8 +21,8 @@ class handler(BaseHTTPRequestHandler):
             if not client_id or not client_secret:
                 raise ValueError("Missing Spotify credentials")
             
-            # Use the production URL if available, otherwise use localhost
-            base_url = os.getenv('VERCEL_URL', 'http://localhost:3000')
+            # Use custom domain if available, otherwise fallback to Vercel URL
+            base_url = os.getenv('CUSTOM_DOMAIN', os.getenv('VERCEL_URL', 'http://localhost:3000'))
             if base_url.startswith('http'):
                 redirect_uri = f"{base_url}/api/spotify/callback"
             else:
