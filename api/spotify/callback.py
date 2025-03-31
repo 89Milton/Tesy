@@ -6,38 +6,40 @@ from urllib.parse import parse_qs, urlparse, quote
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
-        # Get query parameters
-        query_components = parse_qs(urlparse(self.path).query)
-        code = query_components.get('code', [None])[0]
-
-        if not code:
-            self.send_response(400)
-            self.send_header('Content-type', 'application/json')
-            self.end_headers()
-            self.wfile.write(str('{"error": "No code provided"}').encode())
-            return
-
-        # Get Spotify credentials
-        client_id = os.getenv('SPOTIFY_CLIENT_ID')
-        client_secret = os.getenv('SPOTIFY_CLIENT_SECRET')
-        
-        # Use the production URL if available, otherwise use localhost
-        base_url = os.getenv('VERCEL_URL', 'http://localhost:3000')
-        if base_url.startswith('http'):
-            redirect_uri = f"{base_url}/api/spotify/callback"
-        else:
-            redirect_uri = f"https://{base_url}/api/spotify/callback"
-
-        # Create Spotify OAuth object
-        sp_oauth = SpotifyOAuth(
-            client_id=client_id,
-            client_secret=client_secret,
-            redirect_uri=redirect_uri,
-            scope='user-read-private user-read-email user-top-read user-read-recently-played user-read-currently-playing',
-            cache_path=None
-        )
-
         try:
+            # Get query parameters
+            query_components = parse_qs(urlparse(self.path).query)
+            code = query_components.get('code', [None])[0]
+
+            if not code:
+                raise ValueError("No code provided")
+
+            # Get Spotify credentials
+            client_id = os.getenv('SPOTIFY_CLIENT_ID')
+            client_secret = os.getenv('SPOTIFY_CLIENT_SECRET')
+            
+            if not client_id or not client_secret:
+                raise ValueError("Missing Spotify credentials")
+            
+            # Use the production URL if available, otherwise use localhost
+            base_url = os.getenv('VERCEL_URL', 'http://localhost:3000')
+            if base_url.startswith('http'):
+                redirect_uri = f"{base_url}/api/spotify/callback"
+            else:
+                redirect_uri = f"https://{base_url}/api/spotify/callback"
+
+            # Log the redirect URI for debugging
+            print(f"Using redirect URI: {redirect_uri}")
+
+            # Create Spotify OAuth object
+            sp_oauth = SpotifyOAuth(
+                client_id=client_id,
+                client_secret=client_secret,
+                redirect_uri=redirect_uri,
+                scope='user-read-private user-read-email user-top-read user-read-recently-played user-read-currently-playing',
+                cache_path=None
+            )
+
             # Get access token
             token_info = sp_oauth.get_access_token(code)
             
@@ -68,7 +70,9 @@ class handler(BaseHTTPRequestHandler):
             self.end_headers()
 
         except Exception as e:
+            print(f"Error in callback handler: {str(e)}")
             self.send_response(500)
             self.send_header('Content-type', 'application/json')
             self.end_headers()
-            self.wfile.write(str(f'{{"error": "{str(e)}"}}').encode()) 
+            error_message = f'{{"error": "Callback failed: {str(e)}"}}'
+            self.wfile.write(error_message.encode()) 
