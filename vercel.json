@@ -16,6 +16,10 @@
         {
             "src": "/api/spotify/callback",
             "dest": "/api/spotify/callback.py"
+        },
+        {
+            "src": "/api/templates/(.*)",
+            "dest": "/api/templates/$1"
         }
     ]
 } 

@@ -2,7 +2,7 @@ from http.server import BaseHTTPRequestHandler
 import os
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
-from urllib.parse import parse_qs, urlparse
+from urllib.parse import parse_qs, urlparse, quote
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
@@ -58,11 +58,14 @@ class handler(BaseHTTPRequestHandler):
                 'features': features
             }
 
-            # Send response
-            self.send_response(200)
-            self.send_header('Content-type', 'application/json')
+            # Redirect to frontend with data
+            frontend_url = f"{base_url}/api/templates/index.html"
+            encoded_data = quote(str(response))
+            redirect_url = f"{frontend_url}?data={encoded_data}"
+
+            self.send_response(302)
+            self.send_header('Location', redirect_url)
             self.end_headers()
-            self.wfile.write(str(response).encode())
 
         except Exception as e:
             self.send_response(500)

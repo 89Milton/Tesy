@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tesy - Your Music Analytics</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .spotify-green {
+            color: #1DB954;
+        }
+        .spotify-black {
+            color: #191414;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl font-bold spotify-black mb-4">Tesy</h1>
+            <p class="text-xl text-gray-600">Your Personal Music Analytics</p>
+        </header>
+
+        <div id="login-section" class="text-center mb-12">
+            <button id="spotify-login" class="bg-[#1DB954] text-white px-8 py-3 rounded-full font-semibold hover:bg-[#1ed760] transition-colors">
+                Connect with Spotify
+            </button>
+        </div>
+
+        <div id="user-data" class="hidden">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h2 class="text-2xl font-bold mb-4">Your Top Tracks</h2>
+                    <div id="top-tracks" class="space-y-4">
+                        <!-- Tracks will be inserted here -->
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h2 class="text-2xl font-bold mb-4">Track Features</h2>
+                    <div id="track-features" class="space-y-4">
+                        <!-- Features will be inserted here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('spotify-login').addEventListener('click', () => {
+            window.location.href = '/api/spotify/auth';
+        });
+
+        // Check if we have data in the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const data = urlParams.get('data');
+        
+        if (data) {
+            try {
+                const parsedData = JSON.parse(decodeURIComponent(data));
+                displayUserData(parsedData);
+            } catch (error) {
+                console.error('Error parsing data:', error);
+            }
+        }
+
+        function displayUserData(data) {
+            // Hide login section and show user data
+            document.getElementById('login-section').classList.add('hidden');
+            document.getElementById('user-data').classList.remove('hidden');
+
+            // Display top tracks
+            const topTracksDiv = document.getElementById('top-tracks');
+            data.tracks.forEach((track, index) => {
+                const trackElement = document.createElement('div');
+                trackElement.className = 'flex items-center space-x-4 p-2 hover:bg-gray-50 rounded';
+                trackElement.innerHTML = `
+                    <span class="text-gray-500 w-8">${index + 1}</span>
+                    <img src="${track.album.images[2].url}" alt="${track.name}" class="w-16 h-16 rounded">
+                    <div>
+                        <div class="font-semibold">${track.name}</div>
+                        <div class="text-gray-600">${track.artists.map(artist => artist.name).join(', ')}</div>
+                    </div>
+                `;
+                topTracksDiv.appendChild(trackElement);
+            });
+
+            // Display track features
+            const featuresDiv = document.getElementById('track-features');
+            data.features.forEach((feature, index) => {
+                const featureElement = document.createElement('div');
+                featureElement.className = 'p-4 bg-gray-50 rounded';
+                featureElement.innerHTML = `
+                    <div class="font-semibold mb-2">${data.tracks[index].name}</div>
+                    <div class="grid grid-cols-2 gap-2 text-sm">
+                        <div>Danceability: ${Math.round(feature.danceability * 100)}%</div>
+                        <div>Energy: ${Math.round(feature.energy * 100)}%</div>
+                        <div>Valence: ${Math.round(feature.valence * 100)}%</div>
+                        <div>Tempo: ${Math.round(feature.tempo)} BPM</div>
+                    </div>
+                `;
+                featuresDiv.appendChild(featureElement);
+            });
+        }
+    </script>
+</body>
+</html> 
