@@ -3,7 +3,7 @@
     "routes": [
         {
             "src": "/",
-            "dest": "/api/templates/index.html"
+            "dest": "/api/index.py"
         },
         {
             "src": "/health",
@@ -18,7 +18,7 @@
             "dest": "/api/spotify/callback.py"
         },
         {
-            "src": "/api/templates/(.*)",
+            "src": "/static/(.*)",
             "dest": "/api/templates/$1"
         }
     ]
