@@ -37,17 +37,10 @@ class handler(BaseHTTPRequestHandler):
             auth_url = sp_oauth.get_authorize_url()
             print(f"Generated auth URL: {auth_url}")
 
-            # Instead of redirecting, show the information
-            self.send_response(200)
-            self.send_header('Content-type', 'application/json')
+            # Redirect to Spotify login
+            self.send_response(302)
+            self.send_header('Location', auth_url)
             self.end_headers()
-            response = {
-                'redirect_uri': redirect_uri,
-                'auth_url': auth_url,
-                'base_url': base_url,
-                'vercel_url': os.getenv('VERCEL_URL')
-            }
-            self.wfile.write(str(response).encode())
 
         except Exception as e:
             print(f"Error in auth handler: {str(e)}")
