@@ -1,0 +1,228 @@
+:root {
+    --color-navy: #1A1B26;
+    --color-brown: #8B4513;
+    --color-gold: #D4AF37;
+    --color-cream: #F5F5DC;
+    --color-gray: #4A4A4A;
+    --color-light-gray: #E0E0E0;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background-color: var(--color-navy);
+    color: var(--color-cream);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+h1 {
+    font-size: 3rem;
+    font-weight: 300;
+    margin-bottom: 1rem;
+    color: var(--color-gold);
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    color: var(--color-light-gray);
+    font-weight: 300;
+}
+
+.recommendation-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 4rem;
+}
+
+.input-container {
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 2rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin-bottom: 1.5rem;
+    color: var(--color-cream);
+}
+
+.search-container {
+    display: flex;
+    gap: 1rem;
+}
+
+input[type="text"] {
+    flex: 1;
+    padding: 0.8rem;
+    border: 1px solid var(--color-light-gray);
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--color-cream);
+    font-family: 'Noto Sans JP', sans-serif;
+}
+
+input[type="text"]::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.btn {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn.primary {
+    background-color: var(--color-gold);
+    color: var(--color-navy);
+}
+
+.btn.secondary {
+    background-color: var(--color-brown);
+    color: var(--color-cream);
+}
+
+.btn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.btn.authenticated {
+    background-color: var(--color-brown);
+    color: var(--color-cream);
+}
+
+.results-section {
+    margin-top: 4rem;
+}
+
+/* Music Analysis Styles */
+.analysis-container {
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 2rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 2rem;
+}
+
+.tracks-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.track-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    transition: transform 0.2s ease;
+}
+
+.track-item:hover {
+    transform: translateY(-2px);
+}
+
+.track-image {
+    width: 64px;
+    height: 64px;
+    border-radius: 4px;
+    object-fit: cover;
+}
+
+.track-info h3 {
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+    color: var(--color-cream);
+}
+
+.track-info p {
+    font-size: 0.875rem;
+    color: var(--color-light-gray);
+}
+
+.features-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.feature-label {
+    min-width: 120px;
+    text-transform: capitalize;
+    color: var(--color-cream);
+}
+
+.feature-bar {
+    flex: 1;
+    height: 8px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.feature-value {
+    height: 100%;
+    background-color: var(--color-gold);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+@media (max-width: 768px) {
+    .recommendation-section {
+        grid-template-columns: 1fr;
+    }
+    
+    .container {
+        padding: 1rem;
+    }
+    
+    h1 {
+        font-size: 2rem;
+    }
+
+    .tracks-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .feature-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .feature-label {
+        min-width: auto;
+    }
+} 

@@ -1,0 +1,21 @@
+{
+    "version": 2,
+    "routes": [
+        {
+            "src": "/",
+            "dest": "/api/index.py"
+        },
+        {
+            "src": "/health",
+            "dest": "/api/health.py"
+        },
+        {
+            "src": "/api/spotify/auth",
+            "dest": "/api/spotify/auth.py"
+        },
+        {
+            "src": "/api/spotify/callback",
+            "dest": "/api/spotify/callback.py"
+        }
+    ]
+} 

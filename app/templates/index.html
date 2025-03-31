@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liminal Frequencies</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+    <script>
+        // Pass authentication status to JavaScript
+        window.isAuthenticated = {{ is_authenticated|tojson }};
+    </script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Liminal Frequencies</h1>
+            <p class="subtitle">Where music meets literature</p>
+        </header>
+
+        <main>
+            <section class="recommendation-section">
+                <div class="input-container">
+                    <h2>Find Books Based on Your Music</h2>
+                    <button id="spotify-connect" class="btn primary">Connect with Spotify</button>
+                </div>
+
+                <div class="input-container">
+                    <h2>Find Music Based on Your Books</h2>
+                    <div class="search-container">
+                        <input type="text" id="book-search" placeholder="Search for a book...">
+                        <button id="search-btn" class="btn secondary">Search</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="results-section" id="results">
+                <!-- Results will be populated here -->
+            </section>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html> 
