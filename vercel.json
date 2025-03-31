@@ -18,8 +18,14 @@
             "dest": "/api/spotify/callback.py"
         },
         {
-            "src": "/static/(.*)",
+            "src": "/api/templates/(.*)",
             "dest": "/api/templates/$1"
+        }
+    ],
+    "builds": [
+        {
+            "src": "api/**/*.py",
+            "use": "@vercel/python"
         }
     ]
 } 
